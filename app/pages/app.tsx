@@ -1,15 +1,20 @@
-import '../styles/globals.css';
-import type { AppProps } from 'next/app';
-import { AuthProvider } from '../contexts/AuthContext';
-import ErrorBoundary from '../components/errorBoundary';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { supabase } from '../utils/supabaseClient';
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <AuthProvider>
-      <ErrorBoundary>
-        <Component {...pageProps} />
-      </ErrorBoundary>
-    </AuthProvider>
-  );
+function MyApp({ Component, pageProps }: { Component: React.ComponentType<any>, pageProps: any }) {
+  const router = useRouter();
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: session }) => {
+      if (!session) router.push('/login');
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      if (!session) router.push('/login');
+    });
+  }, [router]);
+
+  return <Component {...pageProps} />;
 }
+
 export default MyApp;
