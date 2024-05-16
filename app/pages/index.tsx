@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { supabase } from '../utils/supabaseClient';
-import { fetchDocumentation } from '../services/contentfulService';
+import { fetchContentfulEntry, transformEntryData } from '@/lib/contentful';
 
-const Home: React.FC = () => {
+interface HomeProps {}
+interface HomeState {
+    content: string | null;
+    loading: boolean;
+    error: string | null;
+}
+
+const Home: React.FC<HomeProps> = () => {
     const [content, setContent] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -12,15 +18,19 @@ const Home: React.FC = () => {
     useEffect(() => {
         const authenticateAndFetch = async () => {
             try {
-                const { data: session, error: authError } = await supabase.auth.getSession();
-                if (authError) throw authError;
-                if (!session) {
-                    router.push('/login');
+                const entryId = 'your-entry-id'; // Specify the entry ID
+                const entry = await fetchContentfulEntry(entryId); // Corrected usage of fetch function
+                if (entry) {
+                    const transformedData = transformEntryData(entry); // Use transformEntryData
+                    if (transformedData) {
+                        setContent(transformedData.toString()); // Set transformed data as string
+                    } else {
+                        throw new Error('Content not found');
+                    }
                 } else {
-                    const data = await fetchDocumentation();
-                    setContent(data);
-                    setLoading(false);
+                    throw new Error('Content not found');
                 }
+                setLoading(false);
             } catch (err) {
                 setError('Failed to fetch data');
                 setLoading(false);
