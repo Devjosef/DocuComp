@@ -12,3 +12,10 @@ export default async function handler(
   if (error) return res.status(401).json({ error: 'Unauthorized' });
   res.status(200).json(data);
 }
+// Example of setting up a callback URL in an OAuth setup
+supabase.auth.signInWithOAuth({
+  provider: 'github',
+  options: {
+    redirectTo: 'http://localhost:3000/api/callback' // This is an example callback URL
+  }
+});
