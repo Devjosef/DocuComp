@@ -23,29 +23,29 @@ const AuthButton: React.FC<AuthButtonProps> = ({ provider }) => {
   const handleAuth = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: provider
-      }) as { data: OAuthResponse, error: any };
+        const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: provider
+        }) as { data: OAuthResponse, error: any };
 
-      if (error) throw error;
+        if (error) throw error;
 
-      const user = data.user;
-      const session = data.session;
+        const user = data.user;
+        const session = data.session;
 
-      console.log('Signed in user:', user || 'User data not available');
-      // TODO: Redirect or update UI here, e.g., navigate to a dashboard
+        console.log('Signed in user:', user || 'User data not available');
+        // TODO: Redirect or update UI here, e.g., navigate to a dashboard
     } catch (error) {
-      console.error('Error during sign-in:', error);
-      // Check if error has a message property
-      if (typeof error === 'object' && error !== null && 'message' in error) {
-        alert('Failed to sign in: ' + error.message);
-      } else {
-        alert('Failed to sign in');
-      }
+        console.error('Error during sign-in:', error);
+        // Implement a more integrated error handling approach
+        if (typeof error === 'object' && error !== null && 'message' in error) {
+            // Handle error message
+        } else {
+            // Handle generic error
+        }
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
 
   return (
     <button onClick={handleAuth} disabled={loading}>

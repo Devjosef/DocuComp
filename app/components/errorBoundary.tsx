@@ -19,19 +19,21 @@ class ErrorBoundary extends Component<Props, State> {
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // You can log the error to an error reporting service
-    console.error("Uncaught error:", error, errorInfo);
-  }
+  
+componentDidCatch(error: Error, errorInfo: ErrorInfo) {
 
-  render() {
-    if (this.state.hasError) {
-      // You can render any custom fallback UI
+  console.error("Uncaught error:", error, errorInfo);
+  
+  this.setState({ hasError: true });
+}
+
+render() {
+  if (this.state.hasError) {
       return <h1>Something went wrong.</h1>;
-    }
-
-    return this.props.children;
   }
+
+  return this.props.children;
+}
 }
 
 export default ErrorBoundary;
