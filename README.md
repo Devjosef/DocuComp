@@ -1,4 +1,4 @@
-### Documentation for DocuComp
+### Documentation for DocuComp */ added supabase functions and triggers */
 
 ## Overview
 DocuComp is a sophisticated tool designed to streamline the management and compliance of technical documentation for developers. It offers a user-friendly interface and robust features that facilitate the organization, access, and collaboration on documentation, ensuring accuracy and adherence to regulatory standards.
