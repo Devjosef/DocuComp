@@ -1,23 +1,23 @@
+name: Node.js CI
 
-   name: Node.js CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-   on:
-     push:
-       branches: [ main ]
-     pull_request:
-       branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-   jobs:
-     build:
-       runs-on: ubuntu-latest
-
-       steps:
-       - uses: actions/checkout@v2
-       - name: Use Node.js
-         uses: actions/setup-node@v1
-         with:
-           node-version: '14.x'
-       - run: npm install
-       - run: npm run build
-       - run: npm test
-       - run: npm run lint
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '22.1.0'
+    - run: npm install
+    - run: npm run build
+    - run: npm test
+    - run: npm run lint
+      
