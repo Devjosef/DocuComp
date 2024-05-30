@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "next dev -c config/next.config.mjs",
+    "build": "next build -c config/next.config.mjs",
+    "start": "next start -c config/next.config.mjs",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest --config config/jest.config.js"
   },
   "dependencies": {
     "ioredis": "^5.4.1",
