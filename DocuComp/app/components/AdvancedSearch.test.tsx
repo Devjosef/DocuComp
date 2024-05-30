@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import AdvancedSearch from './AdvancedSearch';
@@ -6,16 +5,16 @@ import AdvancedSearch from './AdvancedSearch';
 describe('AdvancedSearch Component', () => {
     it('renders correctly', () => {
         render(<AdvancedSearch />);
-        expect(screen.getByPlaceholderText('Document Title')).toBeInTheDocument();
-        expect(screen.getByText('Select a Category')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('Document Title')).toBeTruthy();
+        expect(screen.getByText('Select a Category')).toBeTruthy();
+        expect(screen.getByRole('button', { name: 'Search' })).toBeTruthy();
     });
-
     it('allows input to be entered', () => {
         render(<AdvancedSearch />);
         const titleInput = screen.getByPlaceholderText('Document Title');
         fireEvent.change(titleInput, { target: { value: 'Test Document' } });
         expect((titleInput as HTMLInputElement).value).toBe('Test Document');
+    });
     });
 
     it('handles category selection', () => {
@@ -35,4 +34,3 @@ describe('AdvancedSearch Component', () => {
         fireEvent.click(searchButton);
         expect(mockExecuteSearch).toHaveBeenCalled();
     });
-});
