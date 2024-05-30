@@ -1,16 +1,19 @@
 import { supabase } from './supabaseClient';
 
-export const saveDocumentVersion = async (documentId: number, content: string, userId: number) => {
+export const fetchDocumentVersions = async (documentId: number, page: number, limit: number = 10) => {
     const { data, error } = await supabase
-        .from('document_versions')
-        .insert([{ document_id: documentId, content, user_id: userId }]);
-
+      .from('document_versions')
+      .select('*')
+      .eq('document_id', documentId)
+      .range(page * limit, (page + 1) * limit - 1)
+      .order('created_at', { ascending: false });
+  
     if (error) {
-        console.error('Error saving document version:', error);
-        throw error;
+      console.error('Error retrieving document versions:', error);
+      throw error;
     }
     return data;
-};
+  };
 
 export const getDocumentVersions = async (documentId: number) => {
     const { data, error } = await supabase
