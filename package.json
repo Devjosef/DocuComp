@@ -14,7 +14,8 @@
     "ioredis": "^5.4.1",
     "next": "^14.2.3",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-query": "^3.39.3"
   },
   "devDependencies": {
     "@testing-library/react": "^15.0.7",
