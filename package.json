@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -c config/next.config.mjs",
-    "build": "next build -c config/next.config.mjs",
-    "start": "next start -c config/next.config.mjs",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "lint": "next lint",
-    "test": "jest --config config/jest.config.js"
+    "test": "jest --config config/jest.config.js",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.43.4",

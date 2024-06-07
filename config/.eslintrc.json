@@ -1,3 +1,41 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "eslint:recommended", // Start with a set of recommended rules from ESLint - good for catching common JavaScript pitfalls
+    "plugin:react/recommended", // Use recommended React rules to enforce best practices in React development
+    "plugin:@typescript-eslint/recommended", // Apply TypeScript specific rules to improve project's type safety
+    "next/core-web-vitals" // Extend Next.js specific linting rules for performance optimizations
+  ],
+  "rules": {
+    "react/react-in-jsx-scope": "off", // Disable because Next.js automatically imports React in files using JSX
+    "react/prop-types": "off", // Disable prop-types rule as TypeScript is used for type checking
+    "@typescript-eslint/explicit-module-boundary-types": "off", // Allow functions without explicit return type for simpler TypeScript usage
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }], // Error on unused variables, except those starting with an underscore
+    "indent": ["error", 2], // Enforce consistent indentation of 2 spaces throughout the project
+    "no-console": ["warn", { "allow": ["warn", "error"] }], // Warn on console statements except for console.warn and console.error
+    "react/jsx-uses-react": "off", // Not needed with React 17 JSX Transform
+    "react/jsx-uses-vars": "error", // Prevent variables used in JSX to be incorrectly marked as unused
+    "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }] // Allow JSX syntax in .tsx files
+  },
+  "settings": {
+    "react": {
+      "version": "detect" // Automatically detect the version of React to use appropriate rules
+    }
+  },
+  "parser": "@typescript-eslint/parser", // Use the TypeScript parser for ESLint to understand TypeScript syntax
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true // Enable linting of JSX
+    },
+    "ecmaVersion": 2020, // Use modern ECMAScript features
+    "sourceType": "module" // Allow use of imports
+  },
+  "plugins": [
+    "react", // Use React-specific linting rules
+    "@typescript-eslint" // Use TypeScript-specific linting rules
+  ],
+  "env": {
+    "browser": true, // Enable browser global variables
+    "node": true, // Enable Node.js global variables
+    "es2021": true // Use ES2021 global variables and types
+  }
 }
