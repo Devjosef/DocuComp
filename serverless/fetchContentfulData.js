@@ -1,6 +1,7 @@
+import client from '../api/apollo-Client'; // Fixed casing to match other imports
+import { GET_DOCUMENTS } from '../api/queries';
 const axios = require('axios');
 const { createClient } = require('@supabase/supabase-js');
-
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
@@ -9,10 +10,11 @@ const contentfulSpaceId = process.env.CONTENTFUL_SPACE_ID;
 const contentfulAccessToken = process.env.CONTENTFUL_ACCESS_TOKEN;
 
 async function fetchContentfulData() {
-    const url = `https://cdn.contentful.com/spaces/${contentfulSpaceId}/entries?access_token=${contentfulAccessToken}`;
-    const response = await axios.get(url);
-    return response.data.items;
-}
+    const { data } = await client.query({
+      query: GET_DOCUMENTS
+    });
+    return data.documents.items;
+  }
 
 async function storeDataInSupabase(contentItems) {
     for (const item of contentItems) {

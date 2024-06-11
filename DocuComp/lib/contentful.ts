@@ -38,9 +38,14 @@ export function transformEntryData(entry: any): ContentfulEntry {
 }
 
 // Updated fetch function
-export async function fetchContentfulEntry(entryId: string): Promise<ContentfulEntry> {
-    const entry = await client.getEntry<any>(entryId);
-    return transformEntryData(entry);
-}
+export async function fetchContentfulEntry(entryId: string) {
+    try {
+      const entry = await client.getEntry(entryId);
+      return transformEntryData(entry);
+    } catch (error) {
+      console.error('Error fetching entry from Contentful:', error);
+      throw error;
+    }
+  }
 
 export default client;

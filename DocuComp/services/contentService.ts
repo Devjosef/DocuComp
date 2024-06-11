@@ -1,17 +1,109 @@
-import fetchContentfulEntry from '@/lib/contentful';
-import { transformEntryData } from '@/lib/contentful';
+import apolloClient from '../../api/apollo-Client';
+import { GET_ENTRY } from '../../api/queries';
+import { ContentfulClientApi, createClient, Entry } from 'contentful';
 
-export async function fetchDocumentation(entryId: string): Promise<string> {
-    try {
-        const entry = await fetchContentfulEntry.getEntry(entryId);
-        const transformedData = transformEntryData(entry);
-        if (transformedData) {
-            return JSON.stringify(transformedData);
-        } else {
-            throw new Error('Content not found');
+// Define a base type for Contentful entry fields to ensure type safety.
+interface EntrySkeletonType {
+    sys: {
+        id: string;
+        type: string;
+        createdAt: string;
+        updatedAt: string;
+        revision: number; // Added revision as per Contentful sys properties
+        contentType: { // Adjusted to match Contentful's structure
+            sys: {
+                id: string;
+            };
+        };
+        environment: {
+            sys: {
+                id: string;
+                type: string;
+            };
+        };
+        space: {
+            sys: {
+                id: string;
+                type: string;
+            };
+        };
+    };
+    fields: {
+        [key: string]: any;
+    };
+    contentTypeId: string;
+}
+
+// Define the structure of the fields expected in a Contentful entry.
+interface ContentfulEntryFields extends EntrySkeletonType {
+    title: string;
+    content: any;  // Adjust based on actual RichText structure.
+    version: number;
+    status: 'Draft' | 'Review' | 'Published';
+    lastUpdated: string;
+    contentTypeId: string
+}
+
+// Define the complete structure of a Contentful entry including system metadata.
+interface ContentfulEntry extends Entry<ContentfulEntryFields> {}
+// Extend the ContentfulClientApi to include type-specific methods and additional functionality.
+interface CustomClient extends ContentfulClientApi<any> {
+    getPreviewClient: () => ContentfulClientApi<any>;
+}
+
+// Initialize the Contentful client with necessary configuration.
+const client: CustomClient = createClient({
+    space: process.env.CONTENTFUL_SPACE_ID!,
+    accessToken: process.env.CONTENTFUL_DELIVERY_ACCESS_TOKEN!,
+    host: 'cdn.contentful.com', // Ensure using the correct API endpoint
+}) as CustomClient;
+
+// Define a method to get a preview client for viewing unpublished content.
+client.getPreviewClient = function(): ContentfulClientApi<any> {
+    return createClient({
+        space: process.env.CONTENTFUL_SPACE_ID!,
+        accessToken: process.env.CONTENTFUL_PREVIEW_ACCESS_TOKEN!,
+        host: 'preview.contentful.com',
+    }) as unknown as ContentfulClientApi<any>;
+};
+/**
+ * Transforms raw entry data from Contentful into a structured ContentfulEntry.
+ * This function maps the raw API data to a more usable format within our application.
+ * @param entry The raw entry object from Contentful.
+ * @returns A ContentfulEntry object with structured data.
+ */
+export function transformEntryData(entry: any): ContentfulEntry {
+    return {
+        sys: entry.sys,
+        metadata: entry.metadata, // Added missing metadata property
+        fields: {
+            title: entry.fields.title as string,
+            content: entry.fields.content,
+            version: entry.fields.version,
+            status: entry.fields.status,
+            lastUpdated: entry.fields.lastUpdated,
+            contentTypeId: entry.fields.contentTypeId
         }
-    } catch (error: any) {
-        console.error('Error fetching documentation:', error.message);
-        throw new Error(`Failed to fetch documentation: ${error.message}`);
+    };
+}
+
+/**
+ * Fetches a Contentful entry by its ID and transforms it to a ContentfulEntry.
+ * This function is used to retrieve and transform data from Contentful for use in the application.
+ * @param entryId The ID of the entry to fetch.
+ * @returns A promise that resolves to a ContentfulEntry.
+ */
+export async function fetchContentfulEntry(entryId: string): Promise<ContentfulEntry> {
+    try {
+        const { data } = await apolloClient.query({
+            query: GET_ENTRY,
+            variables: { entryId },
+        });
+        // Assuming 'data' contains an 'entry' field with the necessary data.
+        // You might need to adjust this based on the actual structure of the GraphQL response.
+        return transformEntryData(data.entry);
+    } catch (error) {
+        console.error('Error fetching entry from Contentful:', error);
+        throw error;
     }
 }

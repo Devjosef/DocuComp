@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next/types';
-import { supabase } from '../../../lib/supabaseClient';
+import { supabase } from '../../../utils/supabaseClient';
 import rateLimiter from '../../../../middleware/rateLimiter';
 
 // List of allowed tables for querying to prevent unauthorized access
