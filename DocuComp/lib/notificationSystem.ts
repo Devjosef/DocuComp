@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient';
+import {supabase} from '../utils/supabaseClient'
 
 export const sendNotification = async (userId: any, message: any) => {
     const { data, error } = await supabase

@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient';
+import {supabase} from '../utils/supabaseClient';
 
 export const logUserActivity = async (userId: string, activity: string) => {
     const { data, error } = await supabase

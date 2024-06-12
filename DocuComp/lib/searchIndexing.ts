@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient';
+import { supabase } from '../utils/supabaseClient';
 
 export const updateSearchIndex = async (documentId: number, content: string) => {
     const { data, error } = await supabase

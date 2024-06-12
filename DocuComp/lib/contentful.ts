@@ -1,4 +1,5 @@
 import { ContentfulClientApi, createClient } from 'contentful';
+import { cache } from '../utils/caching';
 
 interface ContentfulEntry {
     title: string;       
@@ -37,11 +38,17 @@ export function transformEntryData(entry: any): ContentfulEntry {
     };
 }
 
-// Updated fetch function
+// Updated fetch function with caching
 export async function fetchContentfulEntry(entryId: string) {
+    const cacheKey = `contentful-entry-${entryId}`;
+    const cachedEntry = cache.get(cacheKey);
+    if (cachedEntry) return cachedEntry;
+
     try {
       const entry = await client.getEntry(entryId);
-      return transformEntryData(entry);
+      const transformedEntry = transformEntryData(entry);
+      cache.set(cacheKey, transformedEntry, 3600); // Cache for 1 hour
+      return transformedEntry;
     } catch (error) {
       console.error('Error fetching entry from Contentful:', error);
       throw error;

@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient';
+import { supabase } from '../utils/supabaseClient';
 
 export const fetchDocumentVersions = async (documentId: number, page: number, limit: number = 10) => {
     const { data, error } = await supabase
