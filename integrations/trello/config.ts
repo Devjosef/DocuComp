@@ -1,4 +1,5 @@
 export const trelloConfig = {
     apiKey: process.env.TRELLO_API_KEY,
-    token: process.env.TRELLO_TOKEN,
+    apiSecret: process.env.TRELLO_API_SECRET,
+    accessToken: process.env.TRELLO_ACCESS_TOKEN,
 };

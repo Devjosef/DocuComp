@@ -1,8 +1,5 @@
-// Slack configuration and setup,
-// this is a placeholder for the actual configuration
 export const slackConfig = {
-    token: process.env.SLACK_BOT_TOKEN,
-    signingSecret: process.env.SLACK_SIGNING_SECRET,
+    botToken: process.env.SLACK_BOT_TOKEN,
+    appToken: process.env.SLACK_APP_TOKEN,
+    webhookUrl: process.env.SLACK_WEBHOOK_URL,
 };
-
-export default slackConfig;
