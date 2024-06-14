@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { subscribeToDocuments } from '../../lib/supabaseClient';
+import { subscribeToDocuments } from '../../utils/supabaseClient';
 
+// Component to handle real-time subscription to document changes.
 const DocumentSubscriber: React.FC = () => {
   useEffect(() => {
-    const { unsubscribe } = subscribeToDocuments();
+    const { unsubscribe } = new subscribeToDocuments();
 
     return () => {
       unsubscribe();

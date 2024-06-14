@@ -9,3 +9,5 @@ export const updateSearchIndex = async (documentId: number, content: string) => 
     }
     return data;
 };
+
+export default updateSearchIndex;

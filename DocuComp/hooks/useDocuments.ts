@@ -2,6 +2,7 @@ import { useQuery } from 'react-query';
 import { cache } from '../utils/caching';
 import { supabase } from '../utils/supabaseClient';
 
+// Fetch documents from the database, with caching to improve performance.
 const fetchDocuments = async () => {
     const cachedData = cache.get('documents');
     if (cachedData) return cachedData;

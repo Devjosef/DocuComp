@@ -2,7 +2,7 @@ import apolloClient from '../../api/apollo-Client';
 import { GET_ENTRY } from '../../api/queries';
 import { ContentfulClientApi, createClient, Entry } from 'contentful';
 
-// Define a base type for Contentful entry fields to ensure type safety.
+// Interface for a Contentful entry with system metadata included.
 interface EntrySkeletonType {
     sys: {
         id: string;
@@ -51,14 +51,14 @@ interface CustomClient extends ContentfulClientApi<any> {
     getPreviewClient: () => ContentfulClientApi<any>;
 }
 
-// Initialize the Contentful client with necessary configuration.
+// Initialize the Contentful client with configuration from environment variables.
 const client: CustomClient = createClient({
     space: process.env.CONTENTFUL_SPACE_ID!,
     accessToken: process.env.CONTENTFUL_DELIVERY_ACCESS_TOKEN!,
     host: 'cdn.contentful.com', // Ensure using the correct API endpoint
 }) as CustomClient;
 
-// Define a method to get a preview client for viewing unpublished content.
+// Method to create a client for accessing preview content in Contentful.
 client.getPreviewClient = function(): ContentfulClientApi<any> {
     return createClient({
         space: process.env.CONTENTFUL_SPACE_ID!,
@@ -72,6 +72,8 @@ client.getPreviewClient = function(): ContentfulClientApi<any> {
  * @param entry The raw entry object from Contentful.
  * @returns A ContentfulEntry object with structured data.
  */
+
+// Function to transform raw Contentful data into a structured format for app usage.
 export function transformEntryData(entry: any): ContentfulEntry {
     return {
         sys: entry.sys,
@@ -93,6 +95,8 @@ export function transformEntryData(entry: any): ContentfulEntry {
  * @param entryId The ID of the entry to fetch.
  * @returns A promise that resolves to a ContentfulEntry.
  */
+
+// Fetch and transform a Contentful entry by its ID.
 export async function fetchContentfulEntry(entryId: string): Promise<ContentfulEntry> {
     try {
         const { data } = await apolloClient.query({

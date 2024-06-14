@@ -1,6 +1,6 @@
-import { supabase } from './supabaseClient';
+import { supabase } from '../utils/supabaseClient';
 
-// Example: Function to log user actions
+/// Log user actions in the database using Supabase.
 export const logUserAction = async (userId: number, action: string) => {
     try {
         const { data, error } = await supabase
@@ -18,16 +18,15 @@ export const logUserAction = async (userId: number, action: string) => {
     }
 };
 
-// Example: Function to generate reports
+// Generate a report of user actions grouped by action type from the database.
 export const generateUsageReport = async () => {
     try {
         const { data, error } = await supabase
             .from('user_actions')
             .select(`
                 action,
-                count(*)
-            `)
-            .group('action');
+                count: supabase.raw('count(*)')
+            `);
 
         if (error) {
             console.error('Error generating usage report:', error);
