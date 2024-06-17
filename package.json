@@ -12,6 +12,7 @@
   "dependencies": {
     "@apollo/client": "^3.10.4",
     "@supabase/supabase-js": "^2.43.4",
+    "aws-sdk": "^2.1642.0",
     "contentful": "^10.11.8",
     "dropbox": "^10.34.0",
     "googleapis": "^140.0.0",
