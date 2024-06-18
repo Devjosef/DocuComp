@@ -1,34 +1,36 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-
-const ProfileForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
+import useUserServices from '../../hooks/useUserServices';
 
 const UserProfile = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    console.log('Profile Updated:', { name, email });
-  };
+  const [profileType, setProfileType] = useState('individual');
+  const { error } = useUserServices();
 
   return (
-    <ProfileForm onSubmit={handleSubmit}>
-      <label>
-        Name:
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-      </label>
-      <label>
-        Email:
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      </label>
-      <button type="submit">Update Profile</button>
-    </ProfileForm>
+    <div className="flex flex-col gap-4">
+      {error && <div className="text-red-500">{error}</div>}
+      <select className="border p-2" value={profileType} onChange={(e) => setProfileType(e.target.value)}>
+        <option value="individual">Individual</option>
+        <option value="company">Company</option>
+      </select>
+      {profileType === 'company' && <CompanyProfile />}
+      <UserProfileActions />
+    </div>
   );
 };
 
-export default UserProfile;
+export const CompanyProfile = () => {
+  return (
+    <div>
+      <p>Company-specific information here</p>
+    </div>
+  );
+};
+
+export const UserProfileActions = () => {
+  return (
+    <div>
+      <button>Upload Picture</button>
+      <button>Reset Password</button>
+    </div>
+  );
+};
