@@ -1,36 +1,36 @@
 import React, { useState } from 'react';
-import useUserServices from '../../hooks/useUserServices';
+import { useAuth } from '../../hooks/useAuth';
+import { Panel, Select, Button } from './UIComponents'; // Custom styled components
 
 const UserProfile = () => {
   const [profileType, setProfileType] = useState('individual');
-  const { error } = useUserServices();
+  const [changesMade, setChangesMade] = useState(false);
+
+  const saveChanges = () => {
+    // Logic to save changes
+    console.log('Changes saved');
+    setChangesMade(false);
+  };
+
+  const discardChanges = () => {
+    // Logic to discard changes
+    console.log('Changes discarded');
+    setChangesMade(false);
+  };
 
   return (
-    <div className="flex flex-col gap-4">
-      {error && <div className="text-red-500">{error}</div>}
-      <select className="border p-2" value={profileType} onChange={(e) => setProfileType(e.target.value)}>
-        <option value="individual">Individual</option>
-        <option value="company">Company</option>
-      </select>
-      {profileType === 'company' && <CompanyProfile />}
-      <UserProfileActions />
-    </div>
-  );
-};
-
-export const CompanyProfile = () => {
-  return (
-    <div>
-      <p>Company-specific information here</p>
-    </div>
-  );
-};
-
-export const UserProfileActions = () => {
-  return (
-    <div>
-      <button>Upload Picture</button>
-      <button>Reset Password</button>
-    </div>
+    <Panel title="User Profile">
+      {user && user.imageUrl && (
+        <img src={user.imageUrl} alt="Profile" className="h-16 w-16 rounded-full" />
+      )}
+      <Select options={['individual', 'company']} selected={profileType} onChange={setProfileType} />
+      {profileType === 'company' && (
+        <div>
+          {/* Add company-specific components here */}
+        </div>
+      )}
+      <Button onClick={saveChanges} disabled={!changesMade}>Save Changes</Button>
+      <Button onClick={discardChanges} disabled={!changesMade}>Discard Changes</Button>
+    </Panel>
   );
 };

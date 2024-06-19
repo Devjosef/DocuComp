@@ -1,16 +1,39 @@
-import { useState } from 'react';
-import { uploadProfilePicture, removeUserFromCompany } from '../services/userServices';
+import { useState, useEffect } from 'react';
+import { supabase } from '../utils/supabaseClient';
+import { removeUserFromCompany, updateUserProfile } from '../services/userServices';
 
 const useUserServices = () => {
+  const [user, setUser] = useState(null);
   const [error, setError] = useState('');
 
-  const handleUploadProfilePicture = async (file) => {
-    try {
-      await uploadProfilePicture(file);
-    } catch (err) {
-      setError('Failed to upload profile picture. Please try again.');
+  useEffect(() => {
+    const session = supabase.auth.session();
+
+    if (session) {
+      setUser({
+        ...session.user,
+        imageUrl: session.user.user_metadata.avatar_url // Use OAuth provider's avatar URL
+      });
     }
-  };
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        setUser({
+          ...session.user,
+          imageUrl: session.user.user_metadata.avatar_url
+        });
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => {
+      const { subscription } = supabase.auth.onAuthStateChange((_event, _session) => {});
+      if (subscription) {
+        subscription.unsubscribe();
+      }
+    };
+  }, []);
 
   const handleRemoveUserFromCompany = async (userId) => {
     try {
@@ -20,10 +43,19 @@ const useUserServices = () => {
     }
   };
 
+  const handleUpdateUserProfile = async (userId, profileData) => {
+    try {
+      await updateUserProfile(userId, profileData);
+    } catch (err) {
+      setError('Failed to update user profile. Please try again.');
+    }
+  };
+
   return {
+    user,
     error,
-    handleUploadProfilePicture,
-    handleRemoveUserFromCompany
+    handleRemoveUserFromCompany,
+    handleUpdateUserProfile
   };
 };
 
