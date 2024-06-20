@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { LazyLoadComponent } from '../../utils/lazyloading';
 import { ColorPicker, RoleSelector } from './UIComponents';
-import { useAuth } from '../../hooks/useAuth';
+import { useUserServices } from "../../hooks/useUserServices";
 
 const SettingsPanel = LazyLoadComponent(() => import('./SettingsPanel'));
 

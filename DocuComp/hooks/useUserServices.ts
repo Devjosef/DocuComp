@@ -1,62 +1,52 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabaseClient';
-import { removeUserFromCompany, updateUserProfile } from '../services/userServices';
+
+type User = {
+  id: string;
+  email: string;
+  imageUrl?: string;
+} | null;
 
 const useUserServices = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState('');
-
   useEffect(() => {
-    const session = supabase.auth.session();
-
-    if (session) {
-      setUser({
-        ...session.user,
-        imageUrl: session.user.user_metadata.avatar_url // Use OAuth provider's avatar URL
-      });
-    }
-
-    supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session) {
+        const imageUrl = session.user.user_metadata.avatar_url || session.user.user_metadata.picture;
         setUser({
-          ...session.user,
-          imageUrl: session.user.user_metadata.avatar_url
+          id: session.user.id,
+          email: session.user.email || '', // Ensuring email is always a string
+          imageUrl: imageUrl || '' // Ensuring imageUrl is always a string
         });
       } else {
         setUser(null);
       }
     });
-
     return () => {
-      const { subscription } = supabase.auth.onAuthStateChange((_event, _session) => {});
-      if (subscription) {
-        subscription.unsubscribe();
-      }
+      authListener.subscription.unsubscribe();
     };
   }, []);
 
-  const handleRemoveUserFromCompany = async (userId) => {
-    try {
-      await removeUserFromCompany(userId);
-    } catch (err) {
-      setError('Failed to remove user from company. Please try again.');
-    }
-  };
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        setUser({
+          id: session.user.id,
+          email: session.user.email || '', // Ensuring email is always a string
+          imageUrl: session.user.user_metadata.avatar_url || session.user.user_metadata.picture || '' // Ensuring imageUrl is always a string
+        });
+      } else {
+        setUser(null);
+      }
+    });
+  
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
-  const handleUpdateUserProfile = async (userId, profileData) => {
-    try {
-      await updateUserProfile(userId, profileData);
-    } catch (err) {
-      setError('Failed to update user profile. Please try again.');
-    }
-  };
-
-  return {
-    user,
-    error,
-    handleRemoveUserFromCompany,
-    handleUpdateUserProfile
-  };
+  return { user, error };
 };
 
 export default useUserServices;
