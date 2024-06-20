@@ -1,35 +1,46 @@
 import { google } from 'googleapis';
 import { driveConfig } from './config';
 
-const oauth2Client = new google.auth.OAuth2(
-    driveConfig.clientId,
-    driveConfig.clientSecret,
-    'redirect-uri'
-);
+class GoogleDriveAPI {
+  private googleDrive;
 
-const googleDrive = google.drive({ version: 'v3', auth: oauth2Client });
+  constructor(oauthClient) {
+    this.googleDrive = google.drive({ version: 'v3', auth: oauthClient });
+  }
 
-export const importDocument = async (fileId: string) => {
-    return googleDrive.files.get({ fileId, alt: 'media' });
-};
+  async importDocument(fileId: string) {
+    try {
+      return await this.googleDrive.files.get({ fileId, alt: 'media' });
+    } catch (error) {
+      console.error('Failed to import document from Google Drive:', error);
+      throw error;
+    }
+  }
 
-export const exportDocument = async (documentContent: Buffer, fileName: string) => {
+  async exportDocument(documentContent: Buffer, fileName: string) {
     const fileMetadata = {
-        name: fileName,
-        mimeType: 'application/vnd.google-apps.document',
+      name: fileName,
+      mimeType: 'application/vnd.google-apps.document',
     };
-    return googleDrive.files.create({
+    try {
+      return await this.googleDrive.files.create({
         requestBody: fileMetadata,
         media: {
-            mimeType: 'text/plain',
-            body: documentContent,
+          mimeType: 'text/plain',
+          body: documentContent,
         },
-    });
-};
-export const generateAuthUrl = () => {
-    const scopes = ['https://www.googleapis.com/auth/drive'];
-    return oauth2Client.generateAuthUrl({
-        access_type: 'offline',
-        scope: scopes,
-    });
-};
+      });
+    } catch (error) {
+      console.error('Failed to export document to Google Drive:', error);
+      throw error;
+    }
+  }
+}
+
+const oauth2Client = new google.auth.OAuth2(
+  driveConfig.clientId,
+  driveConfig.clientSecret,
+  'redirect-uri'
+);
+const googleDriveAPI = new GoogleDriveAPI(oauth2Client);
+export default googleDriveAPI;

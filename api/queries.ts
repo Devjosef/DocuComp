@@ -16,6 +16,18 @@ export const GET_ENTRY = gql`
   }
 `;
 
+export interface Entry {
+  sys: {
+    id: string;
+    updatedAt: string;
+  };
+  title: string;
+  content: string;
+  version: number;
+  status: string;
+  lastUpdated: string;
+}
+
 export const GET_DOCUMENTS = gql`
   query GetDocuments {
     documentCollection {

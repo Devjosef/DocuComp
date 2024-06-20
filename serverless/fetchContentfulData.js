@@ -9,26 +9,35 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 const contentfulSpaceId = process.env.CONTENTFUL_SPACE_ID;
 const contentfulAccessToken = process.env.CONTENTFUL_ACCESS_TOKEN;
 
+// Fetches document data from Contentful
 async function fetchContentfulData() {
     const { data } = await client.query({
       query: GET_DOCUMENTS
     });
     return data.documents.items;
-  }
+}
 
-async function storeDataInSupabase(contentItems) {
+// Sanitizes input to prevent XSS attacks
+function sanitizeInput(input) {
+    return input.replace(/<script.*?>.*?<\/script>/gi, ''); // Basic XSS prevention
+}
+
+// Stores sanitized data in Supabase
+async function storeDataInSupabase(contentItems, supabaseClient) {
     for (const item of contentItems) {
-        const { data, error } = await supabase
+        const sanitizedTitle = sanitizeInput(item.fields.title);
+        const sanitizedContent = sanitizeInput(item.fields.content);
+        const { data, error } = await supabaseClient
             .from('your_table')
-            .insert([{ title: item.fields.title, content: item.fields.content }]);
+            .insert([{ title: sanitizedTitle, content: sanitizedContent }]);
         if (error) {
             console.error('Error inserting data:', error);
         }
     }
 }
 
-exports.handler = async (event) => {
+exports.handler = async (event, { supabaseClient }) => {
     const contentItems = await fetchContentfulData();
-    await storeDataInSupabase(contentItems);
+    await storeDataInSupabase(contentItems, supabaseClient);
     return { statusCode: 200, body: 'Data fetched and stored successfully' };
 };

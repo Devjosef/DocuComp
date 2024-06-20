@@ -1,20 +1,23 @@
 import { WebClient } from '@slack/web-api';
 import { slackConfig } from './config';
 
-const slackClient = new WebClient(slackConfig.token);
+// Initialize Slack client with bot token from configuration
+const slackClient = new WebClient(slackConfig.botToken);
 
-export const notifyDocumentUpdate = async (channel: string, message: string, documentId: string) => {
-    const messageContent = `${message} for document ID: ${documentId}`;
-    return sendSlackMessage(channel, messageContent);
-};
-export const sendSlackMessage = async (channel: string, message: string) => {
-    try {
-        const result = await slackClient.chat.postMessage({
-            channel,
-            text: message,
-        });
-        console.log('Message sent: ', result.ts);
-    } catch (error) {
-        console.error('Slack API error: ', error);
-    }
-};
+// Example function to send a message to a Slack channel
+async function sendMessage(channelId: string, message: string) {
+  try {
+    // Post a message to the specified Slack channel
+    const result = await slackClient.chat.postMessage({
+      channel: channelId,
+      text: message,
+    });
+    return result;
+  } catch (error) {
+    // Handle error if Slack API call fails
+    console.error('Slack API error:', error);
+    throw error;
+  }
+}
+
+export { sendMessage };

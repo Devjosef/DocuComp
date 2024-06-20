@@ -1,16 +1,23 @@
 import { Client } from '@microsoft/microsoft-graph-client';
+import { teamsConfig } from './config';
 
-export const sendTeamsMessage = async (teamId: string, message: string) => {
-    const client = Client.init({
-        authProvider: (done) => {
-            done(null, teamsConfig.appPassword); // First parameter takes an error if you can't get an access token
-        }
-    });
+// Initialize Microsoft Graph client
+const client = Client.init({
+  authProvider: (done) => {
+    const appPassword = teamsConfig.appPassword || ''; // Ensure appPassword is not undefined
+    done(null, appPassword);
+  },
+});
 
-    try {
-        await client.api(`/teams/${teamId}/sendActivity`)
-            .post({ message });
-    } catch (error) {
-        console.error('Microsoft Teams API error: ', error);
-    }
-};
+// Example function to send a message to a Teams channel
+async function sendMessage(teamId: string, message: string) {
+  try {
+    const result = await client.api(`/teams/${teamId}/sendActivity`).post({ message });
+    return result;
+  } catch (error) {
+    console.error('Microsoft Teams API error:', error);
+    throw error;
+  }
+}
+
+export { sendMessage };
