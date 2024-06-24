@@ -12,6 +12,10 @@ const usePagination = ({ initialPage, itemsPerPage, totalItems }: PaginationConf
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const goToPage = (pageNumber: number) => {
+    if (pageNumber < 1 || pageNumber > totalPages) {
+      console.error('Page number out of range');
+      return;
+    }
     setCurrentPage(pageNumber);
   };
 

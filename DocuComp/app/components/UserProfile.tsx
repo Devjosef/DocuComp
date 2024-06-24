@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
-import { Panel, Select, Button } from './UIComponents'; // Custom styled components
+import { useRouter } from 'next/router';
+import Panel from '../components/panel';
+import Select from '../components/select';
+import Button from '../components/Button';
+import useUserServices from '../../hooks/useUserServices';
 
 const UserProfile = () => {
   const [profileType, setProfileType] = useState('individual');
   const [changesMade, setChangesMade] = useState(false);
+  const router = useRouter();
+  const { user, error } = useUserServices();
 
   const saveChanges = () => {
     // Logic to save changes
@@ -18,8 +23,17 @@ const UserProfile = () => {
     setChangesMade(false);
   };
 
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <Panel title="User Profile">
+      <div className="flex items-center mb-4">
+        <button onClick={() => router.push('/userActivityDashboard')} className="mr-4">
+          → User Activity
+        </button>
+      </div>
       {user && user.imageUrl && (
         <img src={user.imageUrl} alt="Profile" className="h-16 w-16 rounded-full" />
       )}
@@ -34,3 +48,5 @@ const UserProfile = () => {
     </Panel>
   );
 };
+
+export default UserProfile;

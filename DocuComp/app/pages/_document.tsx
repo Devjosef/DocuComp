@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from 'next/document';
+import React from 'react';
 
 class MyDocument extends Document {
   render() {
@@ -8,7 +9,6 @@ class MyDocument extends Document {
           <meta charSet="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="preload" href="/fonts/your-custom-font.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-          {/* Add other meta tags, stylesheets, or scripts here */}
         </Head>
         <body>
           <Main />

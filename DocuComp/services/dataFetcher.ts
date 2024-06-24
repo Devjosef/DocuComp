@@ -1,5 +1,5 @@
-import apolloClient from '../../api/apollo-Client';
-import { GET_ENTRY } from '../../api/queries';
+import client from '../../graphql/apollo-Client';
+import { GET_DOCUMENTS, GET_ENTRY } from '../../graphql/queries';
 import { createClient } from 'contentful';
 
 const contentfulClient = createClient({

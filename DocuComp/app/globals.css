@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 :root {
+  --primary-color: #000000;
+  --accent-color: #ffffff;
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
@@ -24,6 +26,8 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+  --primary-color: var(--primary-color);
+  --accent-color: var(--accent-color);
 }
 
 @layer utilities {

@@ -1,56 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { fetchContentfulEntry, transformEntryData } from '@/lib/contentful';
+import { fetchContentfulEntry } from '../../lib/contentful';
 
-interface HomeProps {}
-interface HomeState {
-    content: string | null;
-    loading: boolean;
-    error: string | null;
-}
+const Home: React.FC = () => {
+  const [content, setContent] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-const Home: React.FC<HomeProps> = () => {
-    const [content, setContent] = useState<string | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    const router = useRouter();
+  useEffect(() => {
+    const loadContent = async () => {
+      try {
+        const entry = await fetchContentfulEntry('entryId');
+        setContent(entry.content);
+      } catch (err) {
+        setError('Failed to load content');
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadContent();
+  }, []);
 
-    useEffect(() => {
-        const authenticateAndFetch = async () => {
-            try {
-                const entryId = 'your-entry-id'; // Specify the entry ID
-                const entry = await fetchContentfulEntry(entryId); // Corrected usage of fetch function
-                if (entry) {
-                    const transformedData = transformEntryData(entry); // Use transformEntryData
-                    if (transformedData) {
-                        setContent(transformedData.toString()); // Set transformed data as string
-                    } else {
-                        throw new Error('Content not found');
-                    }
-                } else {
-                    throw new Error('Content not found');
-                }
-                setLoading(false);
-            } catch (err) {
-                setError('Failed to fetch data');
-                setLoading(false);
-                console.error(err);
-            }
-        };
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
-        authenticateAndFetch();
-    }, [router]);
-
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
-
-    return (
-        <div>
-            <h1>Welcome to DocuComp</h1>
-            <div>{content ? content : 'No content available'}</div>
-        </div>
-    );
+  return (
+    <div className="p-6 lg:p-24">
+      <h1 className="text-3xl font-bold">Welcome to DocuComp</h1>
+      <div className="mt-4">{content ? content : 'No content available'}</div>
+    </div>
+  );
 };
 
 export default Home;
-

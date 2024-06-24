@@ -1,5 +1,5 @@
-import apolloClient from '../../api/apollo-Client';
-import { GET_ENTRY } from '../../api/queries';
+import apolloClient from '../../graphql/apollo-Client';
+import { GET_ENTRY } from '../../graphql/queries';
 import { ContentfulClientApi, createClient, Entry } from 'contentful';
 
 // Interface for a Contentful entry with system metadata included.

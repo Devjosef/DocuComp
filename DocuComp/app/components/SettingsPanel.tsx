@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import Panel from './panel';
 import ThemeCustomization from './ThemeCustomization';
 import AccessibilityEnhancements from './accessbilityEnhancements';
-
-const Panel = styled.div`
-  padding: 20px;
-  background-color: #f4f4f4;
-`;
 
 const SettingsPanel = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   return (
-    <Panel>
+    <Panel title="Settings">
       <ThemeCustomization />
       <AccessibilityEnhancements />
       <label>
