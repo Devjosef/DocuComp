@@ -12,7 +12,7 @@ test.describe('Document Management Flow', () => {
     await page.click('text=Save');
 
     const content = await page.$eval('textarea[name="content"]', el => (el as HTMLTextAreaElement).value);
-expect(content).toBe('Initial content');
+    expect(content).toBe('Initial content');
     await page.fill('textarea[name="content"]', 'Updated content');
     await page.click('text=Save');
 

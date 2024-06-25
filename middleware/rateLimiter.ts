@@ -16,8 +16,8 @@ class RedisRateLimiter {
         this.redisClient = redisClient;
     }
 
-    // Limits the number of requests an IP can make within a window, using Redis to track counts
-    async limit(handler: NextApiHandler, res: NextApiResponse): Promise<NextApiHandler> {
+    // Middleware function to limit the number of requests an IP can make within a window
+    limit = (handler: NextApiHandler): NextApiHandler => {
         return async (req: NextApiRequest, res: NextApiResponse) => {
             const ip = req.headers['x-forwarded-for'] as string || req.socket.remoteAddress as string;
             const key = `rate-limit:${ip}`;

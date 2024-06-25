@@ -21,7 +21,7 @@ export const mapDocumentToCompliance = async (documentId: number, requirementId:
         }
 
         console.log('Mapping successful:', data);
-        return data;  // Return the data for further use
+        return data; // Return the data for further use
     } catch (error) {
         console.error('Compliance mapping failed:', error);
         throw new Error('Failed to map document to compliance. Please try again.');

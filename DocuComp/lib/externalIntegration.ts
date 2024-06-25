@@ -13,6 +13,6 @@ export const fetchDocumentsFromContentful = async () => {
         return entries.items;
     } catch (error) {
         console.error('Failed to fetch documents from Contentful:', error);
-        throw error;
+        throw new Error(`Error fetching documents from Contentful: ${error.message}`);
     }
 };

@@ -9,12 +9,12 @@ export const logUserAction = async (userId: number, action: string) => {
         
         if (error) {
             console.error('Error logging user action:', error);
-            throw error;
+            throw new Error(`Error logging user action: ${error.message}`);
         }
         return data;
     } catch (error) {
         console.error('Failed to log user action:', error);
-        throw error;
+        throw new Error('Failed to log user action. Please try again.');
     }
 };
 
@@ -30,11 +30,11 @@ export const generateUsageReport = async () => {
 
         if (error) {
             console.error('Error generating usage report:', error);
-            throw error;
+            throw new Error(`Error generating usage report: ${error.message}`);
         }
         return data;
     } catch (error) {
         console.error('Failed to generate usage report:', error);
-        throw error;
+        throw new Error('Failed to generate usage report. Please try again.');
     }
 };

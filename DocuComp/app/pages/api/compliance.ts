@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { checkCompliance } from '../../../services/complianceService'
+import { checkCompliance } from '../../../services/complianceService';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {

@@ -45,14 +45,14 @@ export async function fetchContentfulEntry(entryId: string) {
     if (cachedEntry) return cachedEntry;
 
     try {
-      const entry = await client.getEntry(entryId);
-      const transformedEntry = transformEntryData(entry);
-      cache.set(cacheKey, transformedEntry, 3600); // Cache for 1 hour
-      return transformedEntry;
+        const entry = await client.getEntry(entryId);
+        const transformedEntry = transformEntryData(entry);
+        cache.set(cacheKey, transformedEntry, 3600); // Cache for 1 hour
+        return transformedEntry;
     } catch (error) {
-      console.error('Error fetching entry from Contentful:', error);
-      throw error;
+        console.error('Error fetching entry from Contentful:', error);
+        throw new Error(`Error fetching entry from Contentful: ${error.message}`);
     }
-  }
+}
 
 export default client;

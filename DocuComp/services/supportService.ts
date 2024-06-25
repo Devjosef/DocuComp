@@ -1,11 +1,5 @@
-import { OpenAIApi, Configuration } from 'openai';
+import openai from './openaiconfig';
 import nodemailer from 'nodemailer';
-
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-const openai = new OpenAIApi(configuration);
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -17,13 +11,16 @@ const transporter = nodemailer.createTransport({
 
 export const handleSupportQuery = async (query: string): Promise<string> => {
   try {
-    const response = await openai.createCompletion({
+    const response = await openai.completions.create({
       model: 'text-davinci-003',
       prompt: `Answer the following support query:\n\n${query}\n\nResponse:`,
       max_tokens: 150,
+    }, {
+      headers: {
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      },
     });
-
-    const aiResponse = response.data.choices[0].text.trim();
+    const aiResponse = response.choices[0].text.trim();
 
     if (aiResponse.toLowerCase().includes('i don\'t know')) {
       await transporter.sendMail({

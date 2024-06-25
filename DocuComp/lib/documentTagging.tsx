@@ -8,7 +8,7 @@ const DocumentTagging: React.FC<DocumentTaggingProps> = ({ documentId }) => {
     const [tag, setTag] = useState<string>('');
 
     const handleAddTag = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); // Prevent the form from causing a page reload
+        event.preventDefault();
         const response = await fetch('/api/tags', {
             method: 'POST',
             headers: {
@@ -23,7 +23,7 @@ const DocumentTagging: React.FC<DocumentTaggingProps> = ({ documentId }) => {
         } else {
             const data = await response.json();
             console.log('Tag added:', data);
-            setTag(''); // Clear the input after successful submission
+            setTag('');
         }
     };
 
@@ -49,3 +49,4 @@ const DocumentTagging: React.FC<DocumentTaggingProps> = ({ documentId }) => {
 };
 
 export default DocumentTagging;
+

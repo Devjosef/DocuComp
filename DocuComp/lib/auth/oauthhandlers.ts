@@ -14,7 +14,7 @@ export const signInWithGitHub = async () => {
     return { data };
   } catch (error) {
     console.error("Error during GitHub Oauth sign-in:", error);
-    throw error;
+    throw new Error(`Error during GitHub Oauth sign-in: ${error.message}`);
   }
 };
 
@@ -24,15 +24,15 @@ export const signInWithGoogle = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: process.env.NEXT_PUBLIC_REDIRECT_URL || 'http://localhost:3000/welcome'
-      }
+        redirectTo: process.env.NEXT_PUBLIC_REDIRECT_URL || "http://localhost3000/welcome",
+      },
     });
-
+  
     if (error) throw new Error(`Google login failed: ${error.message}`);
     return { data };
   } catch (error) {
     console.error("Error during Google Oauth sign-in:", error);
-    throw error;
+    throw new Error(`Error during Google Oauth sign-in: ${error.message}`);
   }
-}
+};
 

@@ -1,13 +1,14 @@
-import { supabase } from './supabaseClient';
+import { supabase } from '../utils/supabaseClient';
 
 export const subscribeToDocumentChanges = (documentId: number, callback: (changes: any) => void) => {
     const subscription = supabase
-        .from(`documents:id=eq.${documentId}`)
-        .on('UPDATE', payload => {
-            callback(payload.new);
+        .channel('documents')
+        .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'documents' }, payload => {
+            if (payload.new.id === documentId) {
+                callback(payload.new);
+            }
         })
         .subscribe();
-
     return {
         unsubscribe: () => {
             subscription.unsubscribe();
@@ -23,7 +24,7 @@ export const updateDocumentContent = async (documentId: number, content: string)
 
     if (error) {
         console.error('Error updating document:', error);
-        throw error;
+        throw new Error(`Error updating document: ${error.message}`);
     }
     return data;
 };

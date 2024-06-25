@@ -12,13 +12,12 @@ export const checkCompliance = async (documentId: number): Promise<boolean> => {
             .from('documents')
             .select('compliance')
             .eq('id', documentId)
-            .single();  // Ensures that only one record is returned or an error is thrown
+            .single();
 
         if (error) {
             throw new Error(`Error checking compliance: ${error.message}`);
         }
 
-        // Assuming 'compliance' is a boolean field directly in the data
         return data.compliance;
     } catch (error) {
         console.error('Compliance check failed:', error);

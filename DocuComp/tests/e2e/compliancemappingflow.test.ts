@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Compliance Mapping', () => {
-  test('maps documents to compliance requirements', async ({ page }) => {
+test.describe('Compliance Mapping Flow', () => {
+  test('should map documents to compliance requirements', async ({ page }) => {
     await page.goto('http://localhost:3000/login');
     await page.fill('input[name="username"]', 'mapperUser');
     await page.fill('input[name="password"]', 'mapperPass');
@@ -16,6 +16,6 @@ test.describe('Compliance Mapping', () => {
     await page.selectOption('select[name="complianceRequirement"]', { label: 'Requirement XYZ' });
     await page.click('text=Submit Mapping');
 
-    await expect(page.locator('text=Mapping Successful')).toHaveText('Mapping Successful');
+    await expect(page.locator('text=Mapping Successful')).toBeVisible();
   });
 });

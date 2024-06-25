@@ -31,7 +31,7 @@ class AuditTrail {
 
         if (error) {
             console.error('Error logging audit event:', error);
-            throw error;
+            throw new Error(`Error logging audit event: ${error.message}`);
         }
         console.log('Audit event logged:', data);
     }
