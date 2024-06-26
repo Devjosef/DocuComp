@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { checkCompliance } from '../../../services/complianceService';
+import { handleError, AppError, catchAsync } from '../../../services/errorHandlingService';
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = catchAsync(async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const { documentContent } = req.body;
 
@@ -9,9 +10,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const complianceStatus = await checkCompliance(documentContent);
       res.status(200).json({ complianceStatus });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      throw new AppError('Failed to check compliance', 500);
     }
   } else {
-    res.status(405).json({ error: 'Method not allowed' });
+    throw new AppError('Method not allowed', 405);
+  }
+});
+export default async function complianceHandler(req: NextApiRequest, res: NextApiResponse, next: Function) {
+  try {
+    await handler(req, res, next);
+  } catch (err) {
+    handleError(err, res);
   }
 };

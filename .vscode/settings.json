@@ -6,6 +6,7 @@
         "Docu",
         "docucomp",
         "lazyloading",
+        "oauthhandlers",
         "themecustomization"
     ]
 }

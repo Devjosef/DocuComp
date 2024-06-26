@@ -1,3 +1,4 @@
+import { NextApiRequest } from 'next/types';
 import fetchData from '../../app/pages/api/data';
 import { supabase } from '../../utils/supabaseClient';
 
@@ -19,14 +20,13 @@ describe('Document Management', () => {
       body: {},
       env: {},
       aborted: false,
-      // Add other properties as needed to match NextApiRequest type
       method: 'GET',
       headers: {},
       url: '',
       statusCode: 200,
       statusMessage: 'OK',
-      socket: {},
-      connection: {},
+      socket: {} as any,
+      connection: {} as any,
       httpVersion: '1.1',
       httpVersionMajor: 1,
       httpVersionMinor: 1,
@@ -40,15 +40,10 @@ describe('Document Management', () => {
       readableHighWaterMark: 0,
       readableLength: 0,
       readableObjectMode: false,
-      aborted: false,
-      upgrade: false,
-      body: {},
-      query: { table: 'documents' },
-      cookies: {},
-      env: {}
+      upgrade: false
     } as unknown as NextApiRequest;
 
-    const data = await fetchData(mockRequest, supabase);
+    const data = await fetchData(mockRequest, { supabase } as any);
     expect(data).toEqual(mockData);
   });
   test('fetchData should throw error for unauthorized table', async () => {
@@ -85,5 +80,8 @@ describe('Document Management', () => {
       readableLength: 0,
       readableObjectMode: false,
       upgrade: false
-    } as unknown as any;
-    await expect(fetchData(mockRequest, mockSupabase)).rejects.toThrow('Unauthorized access attempt to \'unauthorized_table\'. This table is not permitted for direct API access.');
+    } as unknown as NextApiRequest;
+    
+    await expect(fetchData(mockRequest, { supabase: mockSupabase } as any)).rejects.toThrow('Unauthorized access attempt to \'unauthorized_table\'. This table is not permitted for direct API access.');
+  });
+});

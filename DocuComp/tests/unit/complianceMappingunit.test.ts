@@ -10,7 +10,7 @@ describe('Compliance Mapping', () => {
 
   test('mapDocumentToCompliance should map a document to a compliance requirement', async () => {
     const mockData = { document_id: 1, compliance_requirement_id: 'XYZ' };
-    supabase.from.mockReturnValue({
+    supabase.from = jest.fn().mockReturnValue({
       insert: jest.fn().mockResolvedValue({ data: mockData, error: null })
     });
 

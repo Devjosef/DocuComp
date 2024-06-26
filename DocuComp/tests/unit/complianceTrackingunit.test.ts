@@ -10,7 +10,7 @@ describe('Compliance Tracking', () => {
 
   test('checkCompliance should return compliance status', async () => {
     const mockData = { compliance: true };
-    supabase.from.mockReturnValue({
+    jest.spyOn(supabase, 'from').mockReturnValue({
       select: jest.fn().mockReturnThis(),
       eq: jest.fn().mockReturnThis(),
       single: jest.fn().mockResolvedValue({ data: mockData, error: null })
@@ -19,9 +19,8 @@ describe('Compliance Tracking', () => {
     const complianceStatus = await checkCompliance(1);
     expect(complianceStatus).toBe(true);
   });
-
   test('checkCompliance should throw error if fetching data fails', async () => {
-    supabase.from.mockReturnValue({
+    jest.spyOn(supabase, 'from').mockReturnValue({
       select: jest.fn().mockReturnThis(),
       eq: jest.fn().mockReturnThis(),
       single: jest.fn().mockResolvedValue({ data: null, error: { message: 'Error' } })

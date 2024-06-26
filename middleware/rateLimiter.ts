@@ -1,4 +1,4 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next/types';        
+import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next/types';
 import Redis from 'ioredis';
 
 // Interface for rate limit options
