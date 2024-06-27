@@ -49,7 +49,7 @@ const handler = catchAsync(async (req: NextApiRequest, res: NextApiResponse) => 
     }
 
     // Apply authentication
-    authenticateJWT(req, res, (err) => {
+    authenticateJWT(req, res, (err: any) => { // Add type annotation
         if (err) {
             throw new AppError('Forbidden', 403);
         }

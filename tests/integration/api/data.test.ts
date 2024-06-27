@@ -6,7 +6,7 @@ import { supabase } from '../../../utils/supabaseClient';
 
 jest.mock('../../../../middleware/security');
 jest.mock('../../../../middleware/rateLimiter');
-jest.mock('../../../../utils/supabaseClient');
+jest.mock('../../../../utils/supabaseClient'); // Ensure the path is correct
 
 describe('API Data Endpoint', () => {
   afterEach(() => {

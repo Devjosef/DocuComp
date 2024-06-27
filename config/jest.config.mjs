@@ -2,24 +2,24 @@ import { defaults } from 'jest-config';
 
 const config = {
   verbose: true,
-  setupFilesAfterEnv: ['<rootDir>/../config/jest.setup.js'], // Corrected path to setup file
-  collectCoverage: true, // Enable coverage collection
+  setupFilesAfterEnv: ['<rootDir>/config/jest.setup.js'], // Ensure this path is correct
+  collectCoverage: true,
   collectCoverageFrom: [
     '**/*.{js,jsx,ts,tsx}',
     '!**/node_modules/**',
     '!**/vendor/**',
   ],
-  coverageDirectory: '<rootDir>/../coverage', // Specify coverage output directory
-  moduleFileExtensions: [...defaults.moduleFileExtensions, 'ts', 'tsx'], // Add TypeScript support
-  testEnvironment: 'jest-environment-jsdom', // Ensure jsdom environment is specified
+  coverageDirectory: '<rootDir>/coverage',
+  moduleFileExtensions: [...defaults.moduleFileExtensions, 'ts', 'tsx'],
+  testEnvironment: 'jest-environment-jsdom',
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest', // Use ts-jest for TypeScript files
-    '^.+\\.(js|jsx)$': 'babel-jest', // Use babel-jest for JavaScript files
+    '^.+\\.(ts|tsx)$': 'ts-jest',
+    '^.+\\.(js|jsx)$': 'babel-jest',
   },
   moduleNameMapper: {
-    '\\.(css|less|scss|sass)$': 'identity-obj-proxy', // Mock CSS imports
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
   },
-  roots: ['<rootDir>/../DocuComp/tests'], // Corrected path to tests directory
+  roots: ['<rootDir>/tests'], // Ensure this path is correct
 };
 
 export default config;

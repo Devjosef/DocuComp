@@ -17,7 +17,7 @@ describe('API Compliance Endpoint', () => {
       method: 'POST',
       body: { documentContent: 'Test content' }
     });
-    await handler(req as any, res as any);
+    await handler(req as any, res as any, () => {}); // Add next function
 
     expect(res.statusCode).toBe(200);
     expect(res._getJSONData()).toEqual({ complianceStatus: mockComplianceStatus });
@@ -30,7 +30,7 @@ describe('API Compliance Endpoint', () => {
       method: 'POST',
       body: { documentContent: 'Test content' }
     });
-    await handler(req as any, res as any);
+    await handler(req as any, res as any, () => {}); // Add next function
 
     expect(res.statusCode).toBe(500);
     expect(res._getJSONData().error).toBe('Internal Server Error');
@@ -41,7 +41,7 @@ describe('API Compliance Endpoint', () => {
       method: 'GET'
     });
 
-    await handler(req as any, res as any);
+    await handler(req as any, res as any, () => {}); // Add next function
 
     expect(res.statusCode).toBe(405);
     expect(res._getJSONData()).toEqual({ error: 'Method Not Allowed' });

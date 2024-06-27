@@ -10,7 +10,7 @@ import { defineConfig, devices } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './e2e',
+  testDir: './e2e', // Ensure this matches the directory where your test files are located
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -36,17 +36,14 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
     },
-
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
     },
-
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
@@ -56,7 +53,6 @@ export default defineConfig({
     //   name: 'Mobile Safari',
     //   use: { ...devices['iPhone 12'] },
     // },
-
     /* Test against branded browsers. */
     // {
     //   name: 'Microsoft Edge',
@@ -69,6 +65,7 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
+  // Uncomment and configure this section if your tests require a running server
   // webServer: {
   //   command: 'npm run start',
   //   url: 'http://127.0.0.1:3000',

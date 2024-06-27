@@ -39,3 +39,10 @@ next-env.d.ts
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Webpack
+/webpack-stats.json
+/webpack-assets.json
+/webpack-bundle-analyzer-report.html
+/webpack-bundle-analyzer-report.json
+/.cache

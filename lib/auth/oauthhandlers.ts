@@ -14,7 +14,7 @@ export const signInWithGitHub = async () => {
     return { data };
   } catch (error) {
     console.error("Error during GitHub Oauth sign-in:", error);
-    throw new Error(`Error during GitHub Oauth sign-in: ${error.message}`);
+    throw new Error(`Error during GitHub Oauth sign-in: ${(error as Error).message}`); // Type assertion
   }
 };
 
@@ -32,7 +32,6 @@ export const signInWithGoogle = async () => {
     return { data };
   } catch (error) {
     console.error("Error during Google Oauth sign-in:", error);
-    throw new Error(`Error during Google Oauth sign-in: ${error.message}`);
+    throw new Error(`Error during Google Oauth sign-in: ${(error as Error).message}`); // Type assertion
   }
 };
-
