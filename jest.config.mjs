@@ -2,7 +2,7 @@ import { defaults } from 'jest-config';
 
 const config = {
   verbose: true,
-  setupFilesAfterEnv: ['<rootDir>/config/jest.setup.js'], // Ensure this path is correct
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'], // Ensure this path is correct
   collectCoverage: true,
   collectCoverageFrom: [
     '**/*.{js,jsx,ts,tsx}',
@@ -20,6 +20,7 @@ const config = {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
   },
   roots: ['<rootDir>/tests'], // Ensure this path is correct
+  testPathIgnorePatterns: ['<rootDir>/tests/e2e/'], // Ignore e2e tests
 };
 
 export default config;
