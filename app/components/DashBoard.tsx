@@ -126,25 +126,25 @@ const Dashboard: React.FC = () => {
                 <h2 className="text-xl font-semibold mb-2">Document Actions</h2>
                 <button
                     onClick={handleArchiveDocument}
-                    className="btn btn-primary mr-2"
+                    className="bg-primary text-accent mr-2"
                 >
                     Archive Document
                 </button>
                 <button
                     onClick={handleRetrieveArchivedDocument}
-                    className="btn btn-secondary mr-2"
+                    className="bg-secondary text-accent mr-2"
                 >
                     Retrieve Archived Document
                 </button>
                 <button
                     onClick={handleCreateBranch}
-                    className="btn btn-primary mr-2"
+                    className="bg-primary text-accent mr-2"
                 >
                     Create Branch
                 </button>
                 <button
                     onClick={handleMergeBranches}
-                    className="btn btn-secondary"
+                    className="bg-secondary text-accent"
                 >
                     Merge Branches
                 </button>
@@ -162,7 +162,7 @@ const Dashboard: React.FC = () => {
                     />
                     <button
                         onClick={handleCreateBranch}
-                        className="btn btn-primary mt-2"
+                        className="bg-primary text-accent mt-2"
                     >
                         Create Branch
                     </button>
@@ -184,7 +184,7 @@ const Dashboard: React.FC = () => {
                     />
                     <button
                         onClick={handleMergeBranches}
-                        className="btn btn-secondary mt-2"
+                        className="bg-secondary text-accent mt-2"
                     >
                         Merge Branches
                     </button>

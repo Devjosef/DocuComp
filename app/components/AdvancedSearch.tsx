@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, ChangeEvent } from 'react';
 import { cache } from '../../utils/caching'; 
 

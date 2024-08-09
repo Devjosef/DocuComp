@@ -1,6 +1,12 @@
+'use client';
+
 import React, { useState } from 'react';
 
-const ComplianceCheck = ({ documentContent }) => {
+interface ComplianceCheckProps {
+  documentContent: string;
+}
+
+const ComplianceCheck: React.FC<ComplianceCheckProps> = ({ documentContent }) => {
   const [complianceStatus, setComplianceStatus] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

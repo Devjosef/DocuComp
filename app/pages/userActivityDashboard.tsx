@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { fetchUserActivities, fetchUserMetrics } from '../../services/userServices';
 import { useRouter } from 'next/router';
